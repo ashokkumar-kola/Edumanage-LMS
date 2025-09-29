@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { formatDateISO } from '../../utils/dateUtils';
+import axios from 'axios';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -54,7 +55,13 @@ const Profile = () => {
     setLoading(true);
     
     try {
-      // This would normally call an API to update profile
+      await axios.put('http://localhost:5000/api/auth/profile', {
+        firstName: profileForm.firstName,
+        lastName: profileForm.lastName,
+        phone: profileForm.phone,
+        dateOfBirth: profileForm.dateOfBirth,
+        address: profileForm.address
+      });
       toast.success('Profile updated successfully!');
     } catch (error) {
       toast.error('Failed to update profile');
