@@ -89,7 +89,7 @@ router.get('/dashboard', [auth, authorize('admin', 'instructor')], async (req, r
 // @access  Public
 router.get('/public', async (req, res) => {
   try {
-    const Grade = require('../grades/Grade');
+    const Grade = require('../grade/Grade');
     
     // Get basic platform stats
     const totalStudents = await User.countDocuments({ role: 'student', isActive: true });

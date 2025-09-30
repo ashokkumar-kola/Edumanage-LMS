@@ -1,6 +1,6 @@
 const express = require('express');
 const { auth } = require('../../middleware/authMiddleware');
-const { validationResult } = require('express-validator');
+const validateRequest = require('../../middleware/validateRequest');
 const NotificationController = require('./notification.controller');
 const {
   createNotificationValidation,
@@ -8,18 +8,6 @@ const {
 } = require('./notification.validation');
 
 const router = express.Router();
-
-// Middleware to handle validation errors
-const validate = (validations) => [
-  ...validations,
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }
-];
 
 // @route   GET /api/notifications
 // @desc    Get user notifications
@@ -32,7 +20,8 @@ router.get('/', auth, NotificationController.getNotifications);
 router.put(
   '/:id/read',
   auth,
-  validate(notificationIdValidation),
+  notificationIdValidation,
+  validateRequest,
   NotificationController.markAsRead
 );
 

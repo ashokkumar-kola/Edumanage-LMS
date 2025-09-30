@@ -66,7 +66,7 @@ notificationSchema.statics.createNotification = async function(data) {
 // Static method to notify all admins
 notificationSchema.statics.notifyAdmins = async function(title, message, type = 'system', relatedData = {}) {
   try {
-    const User = require('./User');
+    const User = require('../user/User');
     const admins = await User.find({ role: 'admin', isActive: true });
     
     const notifications = await Promise.all(
