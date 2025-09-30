@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { formatDateISO } from '../../utils/dateUtils';
+import api from '../../api/api';
 import axios from 'axios';
 
 const Profile = () => {
@@ -55,7 +56,7 @@ const Profile = () => {
     setLoading(true);
     
     try {
-      await axios.put('http://localhost:5000/api/auth/profile', {
+      await api.put('/auth/profile', {
         firstName: profileForm.firstName,
         lastName: profileForm.lastName,
         phone: profileForm.phone,
@@ -64,7 +65,8 @@ const Profile = () => {
       });
       toast.success('Profile updated successfully!');
     } catch (error) {
-      toast.error('Failed to update profile');
+      console.error(error);
+      toast.error(error.response?.data?.message, 'Failed to update profile');
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ const Profile = () => {
         setLoading(false);
         return;
       } 
-      const response = await axios.put('http://localhost:5000/api/auth/change-password', {
+      const response = await api.put('/auth/change-password', {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword
       });
